@@ -1,9 +1,9 @@
 # Configuration for helm/chart-releaser
-# This repo contains a single chart at the repository root.
+# This repo uses the standard Helm layout under charts/
 owner: ""
 git-repo: ""
-# Directory that contains one or more chart directories. For single-chart at root, use '.'
-charts_dir: .
+# Directory that contains one or more chart directories.
+charts_dir: charts
 # Where to stage packaged charts before uploading
 package_path: .cr-release-packages
 # Where to stage the index.yaml and packaged charts for gh-pages

@@ -25,13 +25,13 @@ If you have this repository locally, you can install the chart directly from the
 
 - Create a namespace (optional):
   - `kubectl create namespace maps`
-- Install with default values (will run, but will 404 unless you provide MBTiles):
+- Install with default values:
   - `helm install my-tiles ./ -n maps`
 - Port-forward to test locally:
   - `kubectl -n maps port-forward svc/my-tiles-tileserver-gl-helm-chart 8080:8080`
   - Open http://localhost:8080
 
-The server will serve tiles from the Zurich area per default. To make serve the desired tiles, you need to provide MBTiles (see below) and set the correct `args`.
+The server will serve tiles from the Zurich area per default. To make it serve the desired tiles, you need to provide MBTiles (see below) and set the correct `args`.
 
 ## Providing map data (MBTiles)
 The chart does not ship data. To use your own `.mbtiles` file mount a PersistentVolume (PVC):
@@ -115,7 +115,7 @@ args:
 ```
 
 Install:
-- `helm install my-tiles ./ -n maps`
+- `helm install my-tiles charts/tileserver-gl-helm-chart -n maps`
 - `kubectl -n maps port-forward svc/my-tiles-tileserver-gl-helm-chart 8080:8080`
 - Open http://localhost:8080
 
@@ -153,8 +153,8 @@ httpRoute:
 ```
 
 ## Upgrade, uninstall, and diff
-- Upgrade with new values: `helm upgrade my-tiles ./ -n maps -f values.yaml`
-- See pending changes: `helm diff upgrade my-tiles ./ -n maps -f values.yaml` (requires helm-diff plugin)
+- Upgrade with new values: `helm upgrade my-tiles charts/tileserver-gl-helm-chart -n maps -f charts/tileserver-gl-helm-chart/values.yaml`
+- See pending changes: `helm diff upgrade my-tiles charts/tileserver-gl-helm-chart -n maps -f charts/tileserver-gl-helm-chart/values.yaml` (requires helm-diff plugin)
 - Uninstall: `helm uninstall my-tiles -n maps`
 
 ## Tips and troubleshooting
@@ -181,7 +181,7 @@ One-time repo setup:
 How releases are created:
 - Bump the chart version in `Chart.yaml` (e.g., from `0.1.0` to `0.1.1`).
 - Commit and push to `main`/`master` (the workflow runs on push). The action will:
-  - Package the chart from the repo root
+  - Package the chart from `charts/` (standard layout)
   - Create a GitHub Release named after the chart version (if new)
   - Update `gh-pages` with packaged `.tgz` and the `index.yaml`
 
@@ -190,15 +190,15 @@ Alternatively, you can switch the workflow to trigger only on tags (see commente
 Consume the chart as a dependency (from another chart):
 1) Add the repo URL (replace placeholders):
 ```
-helm repo add tileserver-gl https://<github-username>.github.io/<repo-name>
+helm repo add tileserver-gl https://joe-akeem.github.io/tileserver-gl-helm-chart
 helm repo update
 ```
 2) In your umbrella chart's `Chart.yaml`:
 ```
 dependencies:
   - name: tileserver-gl-helm-chart
-    version: "~0.1.0"
-    repository: "https://<github-username>.github.io/<repo-name>"
+    version: "~0.1.1"
+    repository: "https://joe-akeem.github.io/tileserver-gl-helm-chart"
 ```
 3) Then run:
 ```
@@ -207,6 +207,6 @@ helm dependency update
 
 Notes:
 - The workflow file lives at `.github/workflows/release-helm-chart.yaml` and uses `helm/chart-releaser-action` to manage releases and the `gh-pages` index.
-- By default it runs on every push to `main`/`master` and only publishes when it detects a new chart version not yet released.
+- By default, it runs on every push to `main`/`master` and only publishes when it detects a new chart version not yet released.
 - If you use a custom domain for Pages, set `charts_repo_url` in `.cr.yaml` accordingly and update URLs above.
 
