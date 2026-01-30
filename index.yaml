@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  tileserver-gl-helm-chart:
+  - apiVersion: v2
+    appVersion: v4.5.1
+    created: "2026-01-30T12:40:02.73832763Z"
+    description: A Helm chart for tileserver-gl
+    digest: 5b6815c7dd49680b6ff35a1d449f7fa1a006fd123ff31d6e82f1fbf2af59c660
+    name: tileserver-gl-helm-chart
+    type: application
+    urls:
+    - https://github.com/joe-akeem/tileserver-gl-helm-chart/releases/download/tileserver-gl-helm-chart-0.1.1/tileserver-gl-helm-chart-0.1.1.tgz
+    version: 0.1.1
+generated: "2026-01-30T12:40:02.738336898Z"
