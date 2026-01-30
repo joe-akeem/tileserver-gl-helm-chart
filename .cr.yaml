@@ -1,0 +1,14 @@
+# Configuration for helm/chart-releaser
+# This repo contains a single chart at the repository root.
+owner: ""
+git-repo: ""
+# Directory that contains one or more chart directories. For single-chart at root, use '.'
+charts_dir: .
+# Where to stage packaged charts before uploading
+package_path: .cr-release-packages
+# Where to stage the index.yaml and packaged charts for gh-pages
+index_path: .cr-index
+# Skip already released versions
+skip_existing: true
+# Optionally set your custom charts repo URL (otherwise the action computes from GitHub Pages)
+# charts_repo_url: "https://<github-username>.github.io/<repo-name>"

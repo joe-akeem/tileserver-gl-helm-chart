@@ -166,3 +166,47 @@ httpRoute:
 ## Chart and app versions
 - Chart version: see `Chart.yaml: version`
 - App (image) version: defaults to `Chart.yaml: appVersion` if `image.tag` is empty
+- 
+## Releasing this chart to GitHub Pages (to use as a dependency)
+This repo includes a GitHub Actions workflow that packages the chart and publishes an `index.yaml` to the `gh-pages` branch, so the chart can be consumed via a Helm repo URL.
+
+One-time repo setup:
+- Ensure your default branch is `main` or `master` (the workflow is triggered on push to those branches by default).
+- In GitHub repo Settings → Pages, set:
+  - Source: Deploy from a branch
+  - Branch: `gh-pages` / `/` (root)
+  - Save. GitHub will then serve your chart repo at: `https://<github-username>.github.io/<repo-name>`
+- Optionally create an empty `gh-pages` branch once (the workflow will create/update it if it doesn't exist, but pre-creating avoids an initial race).
+
+How releases are created:
+- Bump the chart version in `Chart.yaml` (e.g., from `0.1.0` to `0.1.1`).
+- Commit and push to `main`/`master` (the workflow runs on push). The action will:
+  - Package the chart from the repo root
+  - Create a GitHub Release named after the chart version (if new)
+  - Update `gh-pages` with packaged `.tgz` and the `index.yaml`
+
+Alternatively, you can switch the workflow to trigger only on tags (see commented `tags: 'v*'` in the workflow) if you prefer tagging to cut releases.
+
+Consume the chart as a dependency (from another chart):
+1) Add the repo URL (replace placeholders):
+```
+helm repo add tileserver-gl https://<github-username>.github.io/<repo-name>
+helm repo update
+```
+2) In your umbrella chart's `Chart.yaml`:
+```
+dependencies:
+  - name: tileserver-gl-helm-chart
+    version: "~0.1.0"
+    repository: "https://<github-username>.github.io/<repo-name>"
+```
+3) Then run:
+```
+helm dependency update
+```
+
+Notes:
+- The workflow file lives at `.github/workflows/release-helm-chart.yaml` and uses `helm/chart-releaser-action` to manage releases and the `gh-pages` index.
+- By default it runs on every push to `main`/`master` and only publishes when it detects a new chart version not yet released.
+- If you use a custom domain for Pages, set `charts_repo_url` in `.cr.yaml` accordingly and update URLs above.
+
