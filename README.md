@@ -1,4 +1,4 @@
-# tileserver-gl-helm-chart
+# tileserver-gl
 
 A Helm chart for deploying [tileserver-gl](https://github.com/maptiler/tileserver-gl) to Kubernetes.
 
@@ -28,7 +28,7 @@ If you have this repository locally, you can install the chart directly from the
 - Install with default values:
   - `helm install my-tiles ./ -n maps`
 - Port-forward to test locally:
-  - `kubectl -n maps port-forward svc/my-tiles-tileserver-gl-helm-chart 8080:8080`
+  - `kubectl -n maps port-forward svc/my-tiles-tileserver-gl 8080:8080`
   - Open http://localhost:8080
 
 The server will serve tiles from the Zurich area per default. To make it serve the desired tiles, you need to provide MBTiles (see below) and set the correct `args`.
@@ -116,7 +116,7 @@ args:
 
 Install:
 - `helm install my-tiles charts/tileserver-gl-helm-chart -n maps`
-- `kubectl -n maps port-forward svc/my-tiles-tileserver-gl-helm-chart 8080:8080`
+- `kubectl -n maps port-forward svc/my-tiles-tileserver-gl 8080:8080`
 - Open http://localhost:8080
 
 ### B. Expose via Ingress
@@ -159,7 +159,7 @@ httpRoute:
 
 ## Tips and troubleshooting
 - 404 or empty index: ensure your MBTiles path in `args` matches a file that exists inside the container
-- Check logs: `kubectl -n <ns> logs deploy/<release>-tileserver-gl-helm-chart`
+- Check logs: `kubectl -n <ns> logs deploy/<release>-tileserver-gl`
 - Probe failures: verify the container serves on `/` and port `8080`, or adjust probes in values
 - Ingress returns 404 from controller: verify host and path rules, and that Service name/port match
 
@@ -196,7 +196,7 @@ helm repo update
 2) In your umbrella chart's `Chart.yaml`:
 ```
 dependencies:
-  - name: tileserver-gl-helm-chart
+  - name: tileserver-gl
     version: "~0.1.1"
     repository: "https://joe-akeem.github.io/tileserver-gl-helm-chart"
 ```
