@@ -160,6 +160,8 @@ tolerations: []
 
 affinity: {}
 
+initContainers: {}
+
 args:
   - "--file"
   - "zurich_switzerland.mbtiles"
