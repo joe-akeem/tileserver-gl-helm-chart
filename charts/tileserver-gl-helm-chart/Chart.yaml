@@ -4,6 +4,6 @@ description: A Helm chart for tileserver-gl
 
 type: application
 
-version: 0.1.3
+version: 0.2.0
 
 appVersion: "v4.5.1"

@@ -59,6 +59,8 @@ args:
 ## Common configuration
 You can configure these values in `values.yaml` or via `--set` flags.
 
+- Global
+  - `enabled`: default `true`. When set to `false`, the chart renders no Kubernetes resources (Deployment, Service, ServiceAccount, Ingress, HTTPRoute, HPA, and test hooks are all disabled). Useful for conditionally including this chart as a dependency. Example: `--set enabled=false`.
 - Replicas
   - `replicaCount`: default `1`
 - Image
